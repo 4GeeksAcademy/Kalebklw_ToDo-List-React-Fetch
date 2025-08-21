@@ -1,0 +1,50 @@
+.parentDiv{
+    width: 18rem;
+    margin: auto;
+    margin-top: 2rem;
+    padding: 0;
+}
+
+.toDoHeader{
+    background-color: bisque;
+    color: rgb(194, 64, 52);
+    margin-bottom: 0;
+}
+
+.listBody{
+    background-color: rgba(255, 235, 205, 0.454);
+    border-radius: 3px;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.listOfChores{
+    padding: 0;
+}
+
+.choreButton{
+    padding: 0;
+    width: 92px;
+    height: 50px;
+}
+
+.ulRoot{
+    display: grid;
+    justify-content: left;
+    margin-bottom: 0;
+    padding-left: 25px
+}
+
+.deleteChore{
+    display: flex;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-size: 8px;
+    border-radius: 2px;
+    background-color: bisque;
+    color: red;
+}
