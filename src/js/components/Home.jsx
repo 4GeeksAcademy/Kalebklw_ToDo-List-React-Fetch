@@ -5,7 +5,6 @@ import './index.css'
 const baseUrl = "https://playground.4geeks.com/todo"
 
 const createUser = () => {
-
 	const options = {
 		method: "POST",
 		headers: {"content-type":"application/json"},
@@ -15,54 +14,69 @@ const createUser = () => {
 	})
 	}
 
-	fetch(baseUrl + "/users/Kalebklw", options)
+	fetch(baseUrl + "/users/Kaleb", options)
 	.then((r) =>r.json())
 	.then((d)=> console.log("create-user-data: ", d))
 };
+
+const updatingTodo = () => {
+	const options = {
+		method: "PUT",
+		headers: {"content-type":"application/json"},
+		body: JSON.stringify({
+			"label": "string",
+  			"is_done": true
+		})
+	}
+
+	fetch(baseUrl + "/todos/11", options)
+	.then((response) => response.json())
+	.then((data) => console.log("Updated ToDos: ", data))
+}
+
+const deleteToDo = (todoID) => {
+	const options = {
+		method: "DELETE",
+		headers: {"content-type":"application/json"}
+	}
+	fetch(baseUrl + "/todos/" + todoID, options)
+	.then((response) => response.json())
+	.then((data) => console.log("Deleted ToDos: ", data))
+}
 
 const getAllUsers = () => {
 	fetch(baseUrl + "/users")
 			.then(
 				(resp) => {
-					console.log("response: ", resp)
+					console.log("Get All Users Response: ", resp)
 					return resp.json()
 				}
 			)
 			.then(
-				(data) => {console.log("dataUsers: ", data)
+				(data) => {console.log("Get All Users Data: ", data)
 				}
 			)
 }
 
-const getToDos = () => {
-	fetch(baseUrl + "/users/Kalebklw")
-	.then((resp)=>{return resp.json()})
-	.then((data)=>{console.log("dataToDo: ", data)})
-}
 
-const addingChore = () => {
+
+const addingChore = (Label) => {
 	let options = {
 		method: "POST",
 		headers: {"content-type":"application/json"},
 		body: JSON.stringify({
-			"label": "wash clothes",
+			"label": Label,
   			"is_done": false
 		})
 	}
-	fetch(baseUrl + "/todos/Kalebklw", options)
+	fetch(baseUrl + "/todos/Kaleb", options)
 	.then((r) =>r.json())
 	.then((d)=> console.log("addingInChore: ", d))
 }
 
 const Home = () => {
 
-	useEffect(
-		() => {
-			addingChore()
-			getToDos()
-			createUser()
-		},[]
-	);
+	
 
 	const [chores, setChores] = useState(["Vacuum", "Wash Dishes", "Dust", "Make Bed"])
 	const [newChore, setNewChore] = useState("")
@@ -70,6 +84,21 @@ const Home = () => {
 		setChores([...chores, newChore])
 		setNewChore("")
 	};
+
+	const getToDos = () => {
+	fetch(baseUrl + "/users/Kaleb")
+	.then((resp)=>{return resp.json()})
+	.then((data)=>{setChores(data.todos)
+		console.log("data tag: ", data)
+	})
+	}
+
+	useEffect(
+		() => {
+			createUser()
+			getToDos()
+		},[]
+	);
 
 	const deleteChore = (item) => {
 		const filteredChores = chores.filter(
@@ -94,6 +123,7 @@ const Home = () => {
 			onKeyDown = {(e) => {
 					if (e.key == "Enter"){
 						nextChore(newChore)
+						addingChore(newChore)
 						}
 					}
 				}
@@ -106,12 +136,13 @@ const Home = () => {
 					className="ulRoot">
 						{chores.map(
 						(item, i) => {
+							console.log("Mapped Item: ", item.id )
 						return(
 							<div className="d-flex">
-								<li className="" key={i + "chore"}>{item}</li>
+								<li className="" key={i + "chore"}>{item.label}</li>
 								<span className="deleteChore"
 								onClick = {() => {
-									deleteChore(item)
+									deleteToDo(item.id)
 										}
 									}
 								>X</span>
@@ -122,14 +153,6 @@ const Home = () => {
 					</ul>
 				</div>
 
-				<div className="choreButton col-4">
-					<button onClick={() => nextChore()}>
-						Add Chore
-					</button>
-					<button onClick={() => addingChore()}>
-						Add Chore To API
-					</button>
-				</div>
 			</div>		
 		</div>
 
