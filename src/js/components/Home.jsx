@@ -34,15 +34,7 @@ const updatingTodo = () => {
 	.then((data) => console.log("Updated ToDos: ", data))
 }
 
-const deleteToDo = (todoID) => {
-	const options = {
-		method: "DELETE",
-		headers: {"content-type":"application/json"}
-	}
-	fetch(baseUrl + "/todos/" + todoID, options)
-	.then((response) => response.json())
-	.then((data) => console.log("Deleted ToDos: ", data))
-}
+
 
 const getAllUsers = () => {
 	fetch(baseUrl + "/users")
@@ -71,6 +63,7 @@ const Home = () => {
 		setNewChore("")
 	};
 
+	// look into how to do asnyc await on this function
 	const getToDos = () => {
 		console.log("Get To Do Called" )
 	fetch(baseUrl + "/users/Kaleb")
@@ -79,7 +72,7 @@ const Home = () => {
 		console.log("get todos data tag: ", data)
 	})
 	}
-
+// look into how to do asnyc await on this function
 const addingChore = (label) => {
 	let options = {
 		method: "POST",
@@ -91,8 +84,22 @@ const addingChore = (label) => {
 	}
 	fetch(baseUrl + "/todos/Kaleb", options)
 	.then((r) =>r.json())
-	.then((d)=> console.log("addingInChore: ", d))
-	getToDos()
+	.then((d)=> {
+		getToDos()
+		console.log("addingInChore: ", d)})
+	
+}
+
+const deleteToDo = (todoID) => {
+	const options = {
+		method: "DELETE",
+		headers: {"content-type":"application/json"}
+	}
+	fetch(baseUrl + "/todos/" + todoID, options)
+	.then((response) => response.json())
+	.then((data) => {
+		getToDos()
+		console.log("Deleted ToDos: ", data)})
 }
 
 	useEffect(
