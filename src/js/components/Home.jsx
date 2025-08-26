@@ -60,38 +60,40 @@ const getAllUsers = () => {
 
 
 
-const addingChore = (Label) => {
-	let options = {
-		method: "POST",
-		headers: {"content-type":"application/json"},
-		body: JSON.stringify({
-			"label": Label,
-  			"is_done": false
-		})
-	}
-	fetch(baseUrl + "/todos/Kaleb", options)
-	.then((r) =>r.json())
-	.then((d)=> console.log("addingInChore: ", d))
-}
-
 const Home = () => {
 
 	
 
 	const [chores, setChores] = useState(["Vacuum", "Wash Dishes", "Dust", "Make Bed"])
 	const [newChore, setNewChore] = useState("")
-	const nextChore = () =>{
+	const updateChoresArray = () =>{
 		setChores([...chores, newChore])
 		setNewChore("")
 	};
 
 	const getToDos = () => {
+		console.log("Get To Do Called" )
 	fetch(baseUrl + "/users/Kaleb")
 	.then((resp)=>{return resp.json()})
 	.then((data)=>{setChores(data.todos)
-		console.log("data tag: ", data)
+		console.log("get todos data tag: ", data)
 	})
 	}
+
+const addingChore = (label) => {
+	let options = {
+		method: "POST",
+		headers: {"content-type":"application/json"},
+		body: JSON.stringify({
+			"label": label,
+  			"is_done": false
+		})
+	}
+	fetch(baseUrl + "/todos/Kaleb", options)
+	.then((r) =>r.json())
+	.then((d)=> console.log("addingInChore: ", d))
+	getToDos()
+}
 
 	useEffect(
 		() => {
@@ -99,12 +101,12 @@ const Home = () => {
 			getToDos()
 		},[]
 	);
-
+	console.log("Chores tag: ", chores)
 	const deleteChore = (item) => {
 		const filteredChores = chores.filter(
 			(choreData) => choreData != item 
 		)
-		console.log("dust: ", filteredChores)	
+		// console.log("dust: ", filteredChores)	
 		setChores(filteredChores)
 	};
 
@@ -113,17 +115,17 @@ const Home = () => {
 			<h1 className="toDoHeader">To-Do List:</h1>
 
 			<input
-			value={newChore}
+			value={newChore.label}
 			placeholder="What Do I Need To Do?"
 			onChange={(e) => {
 				const newTask = e.target.value
-				setNewChore(newTask)
+				setNewChore({label: newTask, is_done: false})
 					}
 				}
 			onKeyDown = {(e) => {
 					if (e.key == "Enter"){
-						nextChore(newChore)
-						addingChore(newChore)
+						updateChoresArray(newChore)
+						addingChore(newChore.label)
 						}
 					}
 				}
@@ -136,7 +138,7 @@ const Home = () => {
 					className="ulRoot">
 						{chores.map(
 						(item, i) => {
-							console.log("Mapped Item: ", item.id )
+							console.log("Mapped Item: ", item)
 						return(
 							<div className="d-flex">
 								<li className="" key={i + "chore"}>{item.label}</li>
