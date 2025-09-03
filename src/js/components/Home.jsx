@@ -63,7 +63,6 @@ const Home = () => {
 		setNewChore("")
 	};
 
-	// look into how to do asnyc await on this function
 	const getToDos = () => {
 		console.log("Get To Do Called" )
 	fetch(baseUrl + "/users/Kaleb")
@@ -72,7 +71,7 @@ const Home = () => {
 		console.log("get todos data tag: ", data)
 	})
 	}
-// look into how to do asnyc await on this function
+
 const addingChore = (label) => {
 	let options = {
 		method: "POST",
@@ -111,9 +110,8 @@ const deleteToDo = (todoID) => {
 	console.log("Chores tag: ", chores)
 	const deleteChore = (item) => {
 		const filteredChores = chores.filter(
-			(choreData) => choreData != item 
-		)
-		// console.log("dust: ", filteredChores)	
+			(choreData) => choreData !== item 
+		)	
 		setChores(filteredChores)
 	};
 
@@ -149,12 +147,14 @@ const deleteToDo = (todoID) => {
 						return(
 							<div className="d-flex">
 								<li className="" key={i + "chore"}>{item.label}</li>
-								<span className="deleteChore"
+								<button 
+								type="button"
+								className="deleteChore btn btn-danger"
 								onClick = {() => {
 									deleteToDo(item.id)
 										}
 									}
-								>X</span>
+								>X</button>
 							</div>
 								)
 							}
