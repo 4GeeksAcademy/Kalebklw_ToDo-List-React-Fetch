@@ -35,6 +35,22 @@
     padding-left: 25px
 }
 
+.updateChore{
+    display: flex;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-size: 8px;
+    border-radius: 2px;
+    background-color: bisque;
+    color: green;
+}
+
 .deleteChore{
     display: flex;
     margin-top: 5px;

@@ -19,45 +19,12 @@ const createUser = () => {
 	.then((d)=> console.log("create-user-data: ", d))
 };
 
-const updatingTodo = () => {
-	const options = {
-		method: "PUT",
-		headers: {"content-type":"application/json"},
-		body: JSON.stringify({
-			"label": "string",
-  			"is_done": true
-		})
-	}
-
-	fetch(baseUrl + "/todos/11", options)
-	.then((response) => response.json())
-	.then((data) => console.log("Updated ToDos: ", data))
-}
-
-
-
-const getAllUsers = () => {
-	fetch(baseUrl + "/users")
-			.then(
-				(resp) => {
-					console.log("Get All Users Response: ", resp)
-					return resp.json()
-				}
-			)
-			.then(
-				(data) => {console.log("Get All Users Data: ", data)
-				}
-			)
-}
-
-
-
 const Home = () => {
 
 	
 
-	const [chores, setChores] = useState(["Vacuum", "Wash Dishes", "Dust", "Make Bed"])
-	const [newChore, setNewChore] = useState("")
+	const [chores, setChores] = useState([])
+	const [newChore, setNewChore] = useState({label: ""})
 	const updateChoresArray = () =>{
 		setChores([...chores, newChore])
 		setNewChore("")
@@ -89,6 +56,23 @@ const addingChore = (label) => {
 	
 }
 
+const updateToDo = (id) => {
+	const options = {
+		method: "PUT",
+		headers: {"content-type":"application/json"},
+		body: JSON.stringify({
+			"label": newChore.label,
+  			"is_done": true
+		})
+	}
+
+	fetch(baseUrl + `/todos/${id}`, options)
+	.then((response) => response.json())
+	.then((data) => {
+		getToDos()
+		console.log("Updated ToDos: ", data)})
+}
+
 const deleteToDo = (todoID) => {
 	const options = {
 		method: "DELETE",
@@ -107,7 +91,6 @@ const deleteToDo = (todoID) => {
 			getToDos()
 		},[]
 	);
-	console.log("Chores tag: ", chores)
 	const deleteChore = (item) => {
 		const filteredChores = chores.filter(
 			(choreData) => choreData !== item 
@@ -147,25 +130,28 @@ const deleteToDo = (todoID) => {
 						return(
 							<div className="d-flex">
 								<li className="" key={i + "chore"}>{item.label}</li>
-								<button 
-								type="button"
-								className="deleteChore btn btn-danger"
-								onClick = {() => {
-									deleteToDo(item.id)
-										}
-									}
-								>X</button>
+
+									<button 
+									type="button"
+									className="updateChore btn btn-success"
+									onClick={()=>{updateToDo(item.id)}}>
+									Update Chore
+									</button>
+
+									<button 
+									type="button"
+									className="deleteChore btn btn-danger"
+									onClick = {() => {deleteToDo(item.id)}}
+									>Delete Chore
+									</button>
 							</div>
 								)
 							}
 						)}
 					</ul>
 				</div>
-
 			</div>		
 		</div>
-
-		
 	);
 };
 
